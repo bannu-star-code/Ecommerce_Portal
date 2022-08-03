@@ -1,0 +1,62 @@
+{% extends 'base.html'%}
+
+{% block content%}
+{% load cart %}
+<div class="container">
+  <div class="border rounded p-4 m-4">
+    <!-- {{products}} -->
+    <p class="display-4 pl-4 ml-4">Your Orders</p>
+    <hr>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Sno.</th>
+          <th>Image</th>
+          <th>Product</th>
+          <th>Date</th>
+          <!-- <th>Price</th> -->
+          <th>Quantity</th>
+          <th>Total</th>
+          <th>Status</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbodys>
+        {% for order in orders %}
+        <tr>
+          <td>{{ forloop.counter}}</td>
+          <td> <img style="height:80px;" class='rounded-circle' src="{{order.product.image.url}}" alt=""></td>
+          <!-- <td>{{order.product}}</td> -->
+          <td>
+            {%for i in order.product.all%}
+            {{i.name}}<br>
+            {% endfor%}
+          </td>
+          <td>{{order.date}}</td>
+          <!-- <td> {{order.price|currency}}</td> -->
+          <td> {{order.quantity}}</td>
+          <td> {{order.quantity|multiply:order.price|currency}}</td>
+          {% if order.status%}
+          <td><small class="badge badge-success">Completed</small></td>
+          {% else%}
+          <td><small class="badge badge-warning">Pending</small></td>
+          <td>
+            <form action="" method="GET">
+              <input type="text" name="del_order" id="" value="{{order.id}}">
+              <input type="submit" value="Delete">
+            </form>
+          </td>
+          {%endif%}
+        </tr>
+        <tr>
+
+          {% endfor %}
+          </tbody>
+
+    </table>
+
+  </div>
+</div>
+
+
+{% endblock%}

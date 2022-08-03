@@ -1,0 +1,77 @@
+{% extends 'base.html'%}
+{% block content%}
+
+{% load cart %}
+<!-- Products -->
+<!-- <h1>Hello, world!</h1> -->
+
+
+<!-- <h2>Hellooooooooooo</h2> -->
+    <!-- all products -->
+    <div id='products' class="col-lg-9 mx-auto">
+      <div class="row mx-auto">
+        
+        <div class="card mx-auto mb-3" id={{object.id}} style="width: 18rem;">
+          <img class="card-img-top" src="{{object.image.url}}" alt="Card image cap">
+          <div class="card-body">
+            <p class="card-title">{{object.name}}</p>
+            <p class="card-text"><b>{{object.price}}</b></p>
+            
+          </div>
+
+
+          
+          <div class="row no-gutters">
+            <form action="/" method="POST" class="btn-block">
+              
+              {% if object|is_in_cart:request.session.favourite %}
+              {% csrf_token %}
+              <input  type="text" hidden name='fav' value='{{object.id}}'>
+              <input  type="text" hidden name='remove1' value='True'>
+              <input type="submit" class="float-right btn btn-light  form-control" value="Remove From Favourite">
+              {%else%}
+              {% csrf_token %}
+              <input hidden type="text" name='fav' value='{{object.id}}'>
+              <input  type="text" hidden name='added' value='True'>
+              <input type="submit" class="float-right btn btn-light  form-control" value="Add To Favourite">
+              {%endif%}
+            </form>
+          </div>
+          <div class="card-footer p-0 no-gutters">
+            
+            {% if object|is_in_cart:request.session.cart %}
+            <div class="row no-gutters">
+              <form action="/" class="col-2 " method="post">
+                {% csrf_token %}
+                <input  type="text" hidden name='product' value='{{object.id}}'>
+                <input  type="text" hidden name='remove' value='True'>
+                <input type="submit" value=" - " class="btn btn-block btn-secondary  border-right">
+              </form>
+              <div class="text-center col text-align">{{product|cart_quantity:request.session.cart}} in Cart</div>
+              <form action="/#{{object.id}}" class="col-2 " method="post">
+                {% csrf_token %}
+                <input hidden type="text" name='product' value='{{object.id}}'>
+                <input type="submit" value=" + " class="btn btn-block btn-secondary border-left">
+              </form>
+            </div>
+            
+            {% else %}
+            <form action="/" method="POST" class="btn-block">
+              {% csrf_token %}
+              <input hidden type="text" name='product' value='{{object.id}}'>
+              <input type="submit" class="float-right btn btn-light  form-control" value="Add To Cart">
+            </form>
+            {% endif %}
+
+          </div>
+
+        </div>
+        
+      </div>
+    </div>
+
+
+
+  </div>
+</div>
+{% endblock%}
