@@ -17,6 +17,7 @@ class Order(models.Model):
     date = models.DateField(default=datetime.datetime.today)
     status = models.BooleanField(default=False)
 
+    
 
     def placeOrder(self):
         self.save()

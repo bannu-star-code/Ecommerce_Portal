@@ -10,12 +10,18 @@ from django.utils.decorators import method_decorator
 class Orders(View):
     # @method_decorator(auth_middleware)
     def get(self, request):
-        # del_order=request.GET["del_order"]
-        # if del_order:
-        #     print(del_order)
+        try:
+            del_order=request.GET["del_order"]
+            if del_order:
+            # print(del_order)
+                dell=Order.objects.filter(id=del_order)
+                print(dell)
+                dell.delete()
+        except:
+            pass
         customer=request.session.get('customer')
-        # print(customer)
-        orders=Order.get_orders_by_customer_id(customer)
+        
+        orders=Order.get_orders_by_customer_id(customer).order_by('-price')
         # for i in orders:
         #     print(i.product.all())
         # print(orders.product)

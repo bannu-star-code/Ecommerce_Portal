@@ -94,7 +94,7 @@
                   </div>
 
                   <!-- TTotal Price -->
-                  <input type="text" name="Total_price" value="{{ products|total_cart_price:request.session.cart}}" hidden>
+                  <input type="text" name="Total_price" value="{{ products|total_cart_price:request.session.cart}}">
                   <input type="submit" class="btn btn-outline-info col-lg-6" value='Check Out'>
               </form>
 

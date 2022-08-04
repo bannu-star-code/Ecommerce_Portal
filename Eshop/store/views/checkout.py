@@ -34,14 +34,14 @@ class Checkout(View):
         # order.product.set(allprods)
         # order.save()
         # cart={}
-        
+        print(price)
         print(sum(list(cart.values())))
         order=Order.objects.create(customer=Customer(id=customer),price=int(price),quantity=sum(list(cart.values()))
         )
         order.product.set(allprods)
         print("order",Order.product)
         print("lennnn",len(order.product.all()))
-        print("asss",order.product.all()[1].quantity)
+        print("asss",order.product.all())
         order.save()
         # request.session["cart"]={}
         return redirect('cart')

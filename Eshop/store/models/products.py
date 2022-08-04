@@ -8,8 +8,8 @@ class Product(models.Model):
     description=models.CharField(max_length=200, default='')
     image=models.ImageField(upload_to='upload/products/')
 
-    # def __str__(self):
-    #     return self.name
+    def __str__(self):
+        return self.name
 
     @staticmethod
     def get_products_by_id(ids):

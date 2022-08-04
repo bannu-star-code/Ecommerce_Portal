@@ -15,8 +15,8 @@
           <th>Product</th>
           <th>Date</th>
           <!-- <th>Price</th> -->
-          <th>Quantity</th>
-          <th>Total</th>
+          <th>Total Quantity</th>
+          <th>Total Price</th>
           <th>Status</th>
           <th>Delete</th>
         </tr>
@@ -35,15 +35,16 @@
           <td>{{order.date}}</td>
           <!-- <td> {{order.price|currency}}</td> -->
           <td> {{order.quantity}}</td>
-          <td> {{order.quantity|multiply:order.price|currency}}</td>
+          <td> {{order.price}}</td>
+          <!-- <td> {{order.quantity|multiply:order.price|currency}}</td> -->
           {% if order.status%}
           <td><small class="badge badge-success">Completed</small></td>
           {% else%}
           <td><small class="badge badge-warning">Pending</small></td>
           <td>
             <form action="" method="GET">
-              <input type="text" name="del_order" id="" value="{{order.id}}">
-              <input type="submit" value="Delete">
+              <input type="text" name="del_order" id="" value="{{order.id}}" hidden>
+              <input type="submit" value="Delete Order">
             </form>
           </td>
           {%endif%}
