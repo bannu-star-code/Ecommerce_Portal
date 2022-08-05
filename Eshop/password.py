@@ -1,3 +1,10 @@
+# email a@gmail.com
+# password Nitin
+
+# email bb@gmail.com
+#password Nitin
+
+
 # # Start=[2,4,1,6,6]
 # # End=[3,5,6,8,10]
 # # n=0
@@ -391,4 +398,4 @@ import collections
 #         break
 # print(s)
 
-print(111%83)
+# print(111%83)

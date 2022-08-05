@@ -8,12 +8,17 @@ from matplotlib import category
 from store.models.products import Product
 from ..models.category import Category
 from ..models.customer import Customer
+from ..models.cart import CartItem
+from ..models.cart import Cart
 from django.views import View
+
+# class NewCart(View):
+#     def get(self,request):
 
 
 class Cart(View):
     def post(self, request):
-        print(request.POST)
+        # print(request.POST)
         cart=request.session["cart"]
         ids=list(cart)
         products=Product.get_products_by_id(ids)
@@ -36,4 +41,13 @@ class Cart(View):
         ids=list(request.session['cart'].keys())
         products=Product.get_products_by_id(ids)
         customer=request.session.get('customer')
-        return render(request, 'cart.html',{'products':products})
+
+        # Database CART CODE
+        print(Customer.objects.filter(id=customer))
+        c=Cart.objects.all()
+        print(c)
+        cartitem=CartItem.objects.all()
+
+
+
+        return render(request, 'cart.html',{'products':products,"cartitem":cartitem})

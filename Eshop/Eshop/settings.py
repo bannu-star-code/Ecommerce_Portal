@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'store'
+    'store' 
 ]
 
 MIDDLEWARE = [
@@ -118,9 +118,11 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-
+import os
 STATIC_URL = '/static/'
 MEDIA_ROOT=BASE_DIR
+# MEDIA_ROOT=os.path.join(BASE_DIR, 'image')
+# MEDIA_URL='/image/'
 MEDIA_URL='/image/download/'
 
 # Default primary key field type

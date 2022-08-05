@@ -43,7 +43,7 @@ class Checkout(View):
         print("lennnn",len(order.product.all()))
         print("asss",order.product.all())
         order.save()
-        # request.session["cart"]={}
+        request.session["cart"]={}
         return redirect('cart')
 
         # return redirect("orders")

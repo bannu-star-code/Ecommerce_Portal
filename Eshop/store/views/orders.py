@@ -21,7 +21,7 @@ class Orders(View):
             pass
         customer=request.session.get('customer')
         
-        orders=Order.get_orders_by_customer_id(customer).order_by('-price')
+        orders=Order.get_orders_by_customer_id(customer).order_by('-date')
         # for i in orders:
         #     print(i.product.all())
         # print(orders.product)
