@@ -16,7 +16,7 @@ from django.views import View
 #     def get(self,request):
 
 
-class CartView(View):
+class Cart(View):
     def post(self, request):
         # print(request.POST)
         cart=request.session["cart"]
