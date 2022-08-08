@@ -11,4 +11,5 @@ from ..models.customer import Customer
 from django.views import View
 
 def serach(request):
+    
     return render(request,'search.html')

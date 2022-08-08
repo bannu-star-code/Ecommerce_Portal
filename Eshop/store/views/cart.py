@@ -8,19 +8,25 @@ from matplotlib import category
 from store.models.products import Product
 from ..models.category import Category
 from ..models.customer import Customer
-from ..models.cart import CartItem
 from ..models.cart import Cart
+from ..models.cart import CartItem
 from django.views import View
+from ..forms import CartItemForm
 
 # class NewCart(View):
 #     def get(self,request):
 
 
-class Cart(View):
+class CartView(View):
+    # class Cart(View):
     def post(self, request):
         # print(request.POST)
         cart=request.session["cart"]
         ids=list(cart)
+        print("requestpost",request.POST)
+        s=CartItemForm(request.POST)
+        if s.is_valid():
+            s.save()
         products=Product.get_products_by_id(ids)
         return redirect("cart")
         # return render(request, 'cart.html',{'products':products})
@@ -41,13 +47,26 @@ class Cart(View):
         ids=list(request.session['cart'].keys())
         products=Product.get_products_by_id(ids)
         customer=request.session.get('customer')
+        print(customer)
 
         # Database CART CODE
-        print(Customer.objects.filter(id=customer))
-        c=Cart.objects.all()
-        print(c)
-        cartitem=CartItem.objects.all()
+
+        
+        print("customer",Customer.objects.filter(id=customer))
+        # cartitem=CartItem.objects.all()
+        c=Cart.objects.filter(user=customer)
+        # carti=CartItem.objects.filter(cart=1)
+        print("c",c)
+        d={}
+        for i in c:
+            cartitem=CartItem.objects.filter(cart=i)
+            s= CartItemForm(initial={'cart': i})
+            if cartitem:
+              d["cartitem"]=cartitem
+            print(cartitem)
+        d["products"]=products
+        d["form"]=s
 
 
 
-        return render(request, 'cart.html',{'products':products,"cartitem":cartitem})
+        return render(request, 'cart.html',d)

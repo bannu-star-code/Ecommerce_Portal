@@ -17,12 +17,10 @@ from django.views import View
 class Index(View):
     def post(self,request):
         product=request.POST.get('product')
-        # print("product",product)
         remove=request.POST.get('remove')
         cart=request.session.get('cart')
         if product:
             if cart:
-            #   print(cart)
               quantity=cart.get(product)
               if quantity:
                 if remove:
@@ -66,10 +64,8 @@ class Index(View):
         if 'query' in request.GET or categoryid:
             if categoryid:
                 products= Product.get_all_products_by_id(categoryid)
-        #     print(products)
             else:
                query=request.GET.get('query')
-            #    print(query)
                products=Product.objects.filter(name__icontains=query)
                if len(products)==0:
                   nothing="Nothing Found"

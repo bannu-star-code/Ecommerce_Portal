@@ -1,5 +1,6 @@
 from unittest.util import _MAX_LENGTH
 from django.db import models
+# from .cart import Cart
 
 class Customer(models.Model):
     first_name= models.CharField(max_length=50)
@@ -27,3 +28,7 @@ class Customer(models.Model):
             return True
         else:
             return False
+    
+    # def create_profie(self):
+    #     Cart.objects.create(user=self.first_name)
+

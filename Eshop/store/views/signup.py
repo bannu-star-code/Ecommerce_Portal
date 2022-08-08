@@ -8,6 +8,7 @@ from matplotlib import category
 from ..models.products import Product
 from ..models.category import Category
 from ..models.customer import Customer
+from ..models.cart import Cart
 from django.views import View
 
 
@@ -40,6 +41,9 @@ class Signup(View):
                 email=email, password=password)
             customer.password=make_password(customer.password)
             customer.register()
+            cart=Cart(user=customer)
+            # if cart.is_valid():
+            cart.save()
             return redirect( 'homepage')
         else:
             data={'error':error_messages,

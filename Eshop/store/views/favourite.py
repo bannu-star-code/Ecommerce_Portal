@@ -30,6 +30,8 @@ class Favourite(View):
             favourite.pop(fav)
             print("after remove",request.session.get('favourite'))
         return redirect('favourite')
+
+        
       def get(self, request):
         print("fav",request.GET)
         ids=list(request.session.get('favourite').keys())
