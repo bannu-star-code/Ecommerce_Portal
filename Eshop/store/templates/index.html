@@ -85,14 +85,23 @@
             {% else %}
             <form action="/" method="POST" class="btn-block">
               {% csrf_token %}
-              <input hidden type="text" name='product' value='{{product.id}}'>
+              <input  type="text" hidden name='product' value='{{product.id}}'>
               <input type="submit" class="float-right btn btn-light  form-control" value="Add To Cart">
             </form>
             {% endif %}
 
           </div>
-          
-         
+          <!-- add to database cart -->
+          {% if customer%}
+          <form action="/" method="POST" class="btn-block">
+            {% csrf_token %}
+            <input  type="text" name='product' value='{{product.id}}' hidden>
+            <input  type="text" name='quantity' value=1 hidden>
+            <input  type="text" name='cart' value={{i}} hidden>
+            <input type="submit" class="float-right btn btn-light  form-control" value="Add To DB Cart">
+            
+          </form>
+          {% endif%}
         </div>
         
         {% endfor %}

@@ -9,6 +9,11 @@ from store.models.products import Product
 from ..models.category import Category
 from ..models.customer import Customer
 from django.views import View
+from ..models.cart import Cart
+from ..models.cart import CartItem
+from django.views import View
+from ..forms import CartItemForm
+
 
 
 # print(make_password('123456'))
@@ -49,9 +54,32 @@ class Index(View):
             request.session['favourite']=favourite
              
         if remove1:
-            # print('remove',remove1)
             favourite.pop(fav)
-            # print("after remove",request.session.get('favourite'))
+
+        customer=request.session.get('customer')
+        c=Cart.objects.filter(user=customer)
+        for i in c:
+            # print("i",i)
+            cartitem=CartItem.objects.filter(cart=i)
+        if request.POST:
+            pp=request.POST["product"]
+            # print(pp)
+            v=True
+            for i in cartitem:
+                if int(pp)==int(i.product.id):
+                    q=CartItem.objects.get(pk=i.id)
+                    a=q.quantity
+                    a+=1
+                    q.quantity=a
+                    q.save(update_fields=['quantity'])             
+                    v=False
+                    
+            if v:
+                s=CartItemForm(request.POST)
+                if s.is_valid():
+                    s.save()
+    
+        
         return redirect('homepage')
 
     def get(self,request):
@@ -60,7 +88,6 @@ class Index(View):
             request.session['cart']={}
         categoryid = request.GET.get('category')
         nothing=""
-        # print("caaaa",categoryid)
         if 'query' in request.GET or categoryid:
             if categoryid:
                 products= Product.get_all_products_by_id(categoryid)
@@ -71,14 +98,38 @@ class Index(View):
                   nothing="Nothing Found"
         else:
             products=Product.objects.all()
-        c = {}
-        c['products']=products
-        c['categories']=Category.get_all_categories()
-        c["nothing"]=nothing
 
-        # print(request.session.get('email'))
-        # print(request.session.get('customer_id'))
-        return render(request, 'index.html', c)
+        d = {}
+        # Database CART CODE
+        customer=request.session.get('customer')
+        c=Cart.objects.filter(user=customer)
+        print("c",c)
+        if customer:
+            s= CartItemForm()
+            d['customer']=customer
+        else:
+            s="Not logged in"
+        for i in c:
+            # print("i",i)
+            cartitem=CartItem.objects.filter(cart=i)
+            s= CartItemForm(initial={'cart': i})
+            d["i"]=i.id
+            # print("iiiiiiii",i)
+            
+            if cartitem:
+              d["cartitem"]=cartitem
+        for i in cartitem:
+            print(i.product.id)
+        d["products"]=products
+        d["form"]=s
+
+     
+        d['products']=products
+        d['categories']=Category.get_all_categories()
+        d["nothing"]=nothing
+
+
+        return render(request, 'index.html', d)
 
 # def index(request):
 #     categoryid = request.GET.get('category')

@@ -26,6 +26,7 @@ class CartView(View):
         print("requestpost",request.POST)
         s=CartItemForm(request.POST)
         if s.is_valid():
+            print("cartrequestpost",request.POST)
             s.save()
         products=Product.get_products_by_id(ids)
         return redirect("cart")
@@ -58,7 +59,13 @@ class CartView(View):
         # carti=CartItem.objects.filter(cart=1)
         print("c",c)
         d={}
+        if customer:
+            s= CartItemForm()
+            d['customer']=customer
+        else:
+            s="Not logged in"
         for i in c:
+            print("i",i)
             cartitem=CartItem.objects.filter(cart=i)
             s= CartItemForm(initial={'cart': i})
             if cartitem:

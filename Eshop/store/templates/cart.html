@@ -7,7 +7,10 @@
 <form action="" method="POST">
   {%csrf_token%}
   {{form.as_p}}
-  <input type="submit" value="addcart">
+  <!-- {{customer}} -->
+  {% if customer %}
+     <input type="submit" value="addcart">
+  {% endif%}
 </form>
 <div class="container">
     <div class="border rounded p-4 m-4">
