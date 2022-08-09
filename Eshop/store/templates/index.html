@@ -46,8 +46,47 @@
             <!-- {{product | is_in_cart:request.session.cart }} -->
           </div>
 
-        
+        <!---------------------------------------------------------------------------------------  -->
           <!-- {{request.session.cart}} -->
+          
+
+        <!---------------------------------------------------------------------------------------  -->
+
+
+          
+          <!-- add to database cart -->
+          {% if customer%}
+          {% if customer%}
+          {%if product.id in pro_list%}
+          <div class="card-footer p-0 no-gutters">
+          <div class="row no-gutters">
+           <form action="" method="POST">
+            {%csrf_token%}
+            <input type="text" name="rem" value="{{product.id}}" hidden>
+            <input type="submit" class="float-right btn btn-light  form-control" value="-">
+           </form>
+            <div style="width:215px;text-align: center;">{{product.id|database_quantity:pro_list}} in Cart</div>
+            <form action="" method="POST">
+              {%csrf_token%}
+            <input type="text" name="product" value="{{product.id}}" hidden>
+            <input type="submit" class="float-right btn btn-light  form-control" value="+">
+           </form>
+          </div>
+          </div>
+          
+          {%else%}
+          <form action="/" method="POST" class="btn-block">
+            {% csrf_token %}
+            <input  type="text" name='product' value='{{product.id}}' hidden>
+            <input  type="text" name='quantity' value=1 hidden>
+            <input  type="text" name='cart' value={{i}} hidden>
+            
+            <input type="submit" class="float-right btn btn-light  form-control" value="Add To DB Cart">
+            {%endif%}
+          </form>
+          {% endif%}
+
+          {% else%}
           <div class="row no-gutters">
             <form action="/" method="POST" class="btn-block">
               
@@ -91,16 +130,6 @@
             {% endif %}
 
           </div>
-          <!-- add to database cart -->
-          {% if customer%}
-          <form action="/" method="POST" class="btn-block">
-            {% csrf_token %}
-            <input  type="text" name='product' value='{{product.id}}' hidden>
-            <input  type="text" name='quantity' value=1 hidden>
-            <input  type="text" name='cart' value={{i}} hidden>
-            <input type="submit" class="float-right btn btn-light  form-control" value="Add To DB Cart">
-            
-          </form>
           {% endif%}
         </div>
         

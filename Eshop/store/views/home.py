@@ -1,5 +1,6 @@
 from email.policy import HTTP
 from http.client import HTTPResponse
+from tkinter import E
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password, check_password
@@ -59,21 +60,38 @@ class Index(View):
         customer=request.session.get('customer')
         c=Cart.objects.filter(user=customer)
         for i in c:
-            # print("i",i)
             cartitem=CartItem.objects.filter(cart=i)
+        print(request.POST)
         if request.POST:
-            pp=request.POST["product"]
-            # print(pp)
             v=True
-            for i in cartitem:
-                if int(pp)==int(i.product.id):
+            try:
+              pp=request.POST["product"]
+              print("pp",pp)
+              if pp:
+                for i in cartitem:
+                  if int(pp)==int(i.product.id):
                     q=CartItem.objects.get(pk=i.id)
                     a=q.quantity
                     a+=1
                     q.quantity=a
                     q.save(update_fields=['quantity'])             
                     v=False
-                    
+            except:
+                pass
+              
+            try:
+                rr=request.POST["rem"]
+                for i in cartitem:
+                  if int(rr)==int(i.product.id):
+                    q=CartItem.objects.get(pk=i.id)
+                    a=q.quantity
+                    a-=1
+                    q.quantity=a
+                    q.save(update_fields=['quantity'])             
+                    v=False
+             
+            except:
+                pass 
             if v:
                 s=CartItemForm(request.POST)
                 if s.is_valid():
@@ -103,27 +121,35 @@ class Index(View):
         # Database CART CODE
         customer=request.session.get('customer')
         c=Cart.objects.filter(user=customer)
-        print("c",c)
+        # print("c",c)
         if customer:
             s= CartItemForm()
             d['customer']=customer
         else:
             s="Not logged in"
         for i in c:
-            # print("i",i)
+            
             cartitem=CartItem.objects.filter(cart=i)
             s= CartItemForm(initial={'cart': i})
             d["i"]=i.id
-            # print("iiiiiiii",i)
-            
+           
             if cartitem:
               d["cartitem"]=cartitem
-        for i in cartitem:
-            print(i.product.id)
+        dicc={}
+        try:
+          for i in cartitem:
+            dicc[i.product.id]=i.quantity
+            # l.append(i.product.id)
+            # m.append(i.quantitiy)
+            # pass
+        except:
+            pass
+        # print(sum(dicc.values()))
+        # print(dicc[2])
+        d["total_quantity"]=sum(dicc.values())
         d["products"]=products
         d["form"]=s
-
-     
+        d["pro_list"]=dicc     
         d['products']=products
         d['categories']=Category.get_all_categories()
         d["nothing"]=nothing

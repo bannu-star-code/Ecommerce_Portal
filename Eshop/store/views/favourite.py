@@ -34,7 +34,10 @@ class Favourite(View):
         
       def get(self, request):
         print("fav",request.GET)
-        ids=list(request.session.get('favourite').keys())
+        try:
+         ids=list(request.session.get('favourite').keys())
+        except:
+          pass
         #   ids.remove('null')
         # print()
         # print('favortepageids:',ids)

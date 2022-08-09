@@ -5,6 +5,8 @@ from django.views import  View
 from store.models.customer import Customer
 from ..models.products import Product
 from ..models.order import Order
+from ..models.cart import Cart, CartItem
+
 
 class Checkout(View):
     def get(self,request):
@@ -16,27 +18,27 @@ class Checkout(View):
         phone=request.POST["Phone"]
         price=request.POST["Total_price"]
         cart=request.session["cart"]
-        cart_keys=list(cart.keys())
+        customer=request.session["customer"]
+        c=Cart.objects.filter(user=customer)
+        for i in c:
+            cartitem=CartItem.objects.filter(cart=i)
+        dicc={}
+        try:
+          for i in cartitem:
+            dicc[i.product.id]=i.quantity
+            # l.append(i.product.id)
+            # m.append(i.quantitiy)
+            # pass
+        except:
+            pass
+        cart_keys=list(dicc.keys())
         allprods=Product.objects.filter(id__in=cart_keys)
         # print(Product.objects.filter(id__in=cart_keys))
         # print("get",Product.objects.get(id=1))
-        customer=request.session["customer"]
-        # print(price)
-        # print(customer)
-        print(allprods)
-        # order=Order(
-        # customer=Customer(id=customer),
-        # price=int(price),
-        # address=address,
-        # phone=phone,
-        # )
-        # # for prod in allprods:
-        # order.product.set(allprods)
-        # order.save()
-        # cart={}
-        print(price)
-        print(sum(list(cart.values())))
-        order=Order.objects.create(customer=Customer(id=customer),price=int(price),quantity=sum(list(cart.values()))
+        # print("c",c)
+        
+       
+        order=Order.objects.create(customer=Customer(id=customer),price=int(price),quantity=sum(dicc.values())
         )
         order.product.set(allprods)
         print("order",Order.product)

@@ -51,7 +51,14 @@
       <ul class="navbar-nav">
         <li class="nav-item active">
           <a class="nav-link" href="/cart">Carts
-            <span class="badge badge-primary">{{ request.session.cart.values|total_cart}}</span>
+            <!-- <span class="badge badge-primary">{{ request.session.cart.values|total_cart}}</span> -->
+            {% if customer %}
+            <span class="badge badge-primary">
+              {{total_quantity}}
+            </span>
+            {% else%}
+            <span class="badge badge-primary">{{ request.session.cart.values|total_cart}}</span> 
+            {% endif %}
             <span class="sr-only">(current)</span></a>
         </li>
         {% if request.session.customer %}

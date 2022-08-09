@@ -4,14 +4,15 @@
 {% load cart %}
 
 <!-- <div>{{form}}</div> -->
-<form action="" method="POST">
+<!-- <form action="" method="POST">
   {%csrf_token%}
   {{form.as_p}}
-  <!-- {{customer}} -->
+  {{customer}}
   {% if customer %}
      <input type="submit" value="addcart">
   {% endif%}
-</form>
+</form> -->
+{% if not customer %}
 <div class="container">
     <div class="border rounded p-4 m-4">
         <!-- {{products}} -->
@@ -89,7 +90,7 @@
 
 
 
-
+{% else%}
 <div class="container">
   <div class="border rounded p-4 m-4">
       <!-- {{products}} -->
@@ -169,7 +170,10 @@
                   </div>
 
                   <!-- TTotal Price -->
-                  <input type="text" name="Total_price" value="{{ products|total_cart_price:request.session.cart}}">
+                  <!-- <input type="text" name="Total_price" value="{{ products|total_cart_price:request.session.cart}}"> -->
+                  <input type="text" name="Total_price" value="{{cartitem|Db_total_price}}">
+
+
                   <input type="submit" class="btn btn-outline-info col-lg-6" value='Check Out'>
               </form>
 
@@ -182,4 +186,6 @@
       </div>
     </div>
   </div>
+
+{% endif %}
 {% endblock%}

@@ -57,3 +57,7 @@ def Db_total_price(cartitem):
         sum+=In_total_price(i.product.price,i.quantity)
         # sum+=int(i.product.price)*int(i.quantity)
     return sum
+
+@register.filter(name="database_quantity")
+def database_quantity(prod_id,prolist):
+    return prolist[prod_id]
