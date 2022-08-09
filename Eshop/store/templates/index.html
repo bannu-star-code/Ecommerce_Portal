@@ -45,6 +45,22 @@
             <a href="product/{{product.id}}/" style="text-decoration: none;color:#03192c;">View More</a>
             <!-- {{product | is_in_cart:request.session.cart }} -->
           </div>
+          <div class="row no-gutters">
+            <form action="/" method="POST" class="btn-block">
+              
+              {% if product|is_in_cart:request.session.favourite %}
+              {% csrf_token %}
+              <input  type="text" hidden name='fav' value='{{product.id}}'>
+              <input  type="text" hidden name='remove1' value='True'>
+              <input type="submit" class="float-right btn btn-light  form-control" value="Remove From Favourite">
+              {%else%}
+              {% csrf_token %}
+              <input hidden type="text" name='fav' value='{{product.id}}'>
+              <input  type="text" hidden name='added' value='True'>
+              <input type="submit" class="float-right btn btn-light  form-control" value="Add To Favourite">
+              {%endif%}
+            </form>
+          </div>
 
         <!---------------------------------------------------------------------------------------  -->
           <!-- {{request.session.cart}} -->
@@ -58,6 +74,7 @@
           {% if customer%}
           {% if customer%}
           {%if product.id in pro_list%}
+          
           <div class="card-footer p-0 no-gutters">
           <div class="row no-gutters">
            <form action="" method="POST">

@@ -26,18 +26,12 @@ class Checkout(View):
         try:
           for i in cartitem:
             dicc[i.product.id]=i.quantity
-            # l.append(i.product.id)
-            # m.append(i.quantitiy)
-            # pass
         except:
             pass
         cart_keys=list(dicc.keys())
         allprods=Product.objects.filter(id__in=cart_keys)
-        # print(Product.objects.filter(id__in=cart_keys))
-        # print("get",Product.objects.get(id=1))
-        # print("c",c)
         
-       
+        print("aall",allprods)
         order=Order.objects.create(customer=Customer(id=customer),price=int(price),quantity=sum(dicc.values())
         )
         order.product.set(allprods)
@@ -46,6 +40,9 @@ class Checkout(View):
         print("asss",order.product.all())
         order.save()
         request.session["cart"]={}
+        for i in cartitem:
+            p=CartItem.objects.get(pk=i.id)
+            p.delete()
         return redirect('cart')
 
         # return redirect("orders")
