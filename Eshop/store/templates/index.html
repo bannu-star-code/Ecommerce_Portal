@@ -46,7 +46,7 @@
             <!-- {{product | is_in_cart:request.session.cart }} -->
           </div>
           <div class="row no-gutters">
-            <form action="/" method="POST" class="btn-block">
+            <form action="/" method="POST" class="btn-block col-12" >
               
               {% if product|is_in_cart:request.session.favourite %}
               {% csrf_token %}
@@ -77,13 +77,13 @@
           
           <div class="card-footer p-0 no-gutters">
           <div class="row no-gutters">
-           <form action="" method="POST">
+           <form action="" method="POST" class="col-2">
             {%csrf_token%}
             <input type="text" name="rem" value="{{product.id}}" hidden>
             <input type="submit" class="float-right btn btn-light  form-control" value="-">
            </form>
-            <div style="width:200px;text-align: center;">{{product.id|database_quantity:pro_list}} in Cart</div>
-            <form action="" method="POST">
+            <div class="text-center col text-align">{{product.id|database_quantity:pro_list}} in Cart</div>
+            <form action="" method="POST" class="col-2">
               {%csrf_token%}
             <input type="text" name="product" value="{{product.id}}" hidden>
             <input type="submit" class="float-right btn btn-light  form-control" value="+">
@@ -92,15 +92,18 @@
           </div>
           
           {%else%}
-          <form action="/" method="POST" class="btn-block">
-            {% csrf_token %}
-            <input  type="text" name='product' value='{{product.id}}' hidden>
-            <input  type="text" name='quantity' value=1 hidden>
-            <input  type="text" name='cart' value={{i}} hidden>
-            
-            <input type="submit" class="float-right btn btn-light  form-control" value="Add To DB Cart">
-            {%endif%}
-          </form>
+          <!-- <div> -->
+            <form action="/" method="POST" class="btn-block" style="width:285px;margin-left: -10px;">
+              {% csrf_token %}
+              <input  type="text" name='product' value='{{product.id}}' hidden>
+              <input  type="text" name='quantity' value=1 hidden>
+              <input  type="text" name='cart' value={{i}} hidden>
+              
+              <input type="submit" class="float-right btn btn-light  form-control" value="Add To DB Cart">
+              {%endif%}
+            </form>
+          <!-- </div> -->
+          
           {% endif%}
 
           {% else%}

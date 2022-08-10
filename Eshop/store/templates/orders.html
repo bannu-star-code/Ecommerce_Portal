@@ -2,11 +2,43 @@
 
 {% block content%}
 {% load cart %}
+
+<style>
+  @media only screen and (max-width:800px) {
+      #no-more-tables tbody,
+      #no-more-tables tr,
+      #no-more-tables td {
+          display: block;
+      }
+      #no-more-tables thead tr {
+          position: absolute;
+          top: -9999px;
+          left: -9999px;
+      }
+      #no-more-tables td {
+          position: relative;
+          padding-left: 50%;
+          border: none;
+          border-bottom: 1px solid #eee;
+      }
+      #no-more-tables td:before {
+          content: attr(data-title);
+          position: absolute;
+          left: 6px;
+          font-weight: bold;
+      }
+      #no-more-tables tr {
+          border-bottom: 1px solid #ccc;
+      }
+  }
+</style>
 <div class="container">
   <div class="border rounded p-4 m-4">
     <!-- {{products}} -->
     <p class="display-4 pl-4 ml-4">Your Orders</p>
     <hr>
+    <section class="bg-light p-5">
+      <div class="responsive-table" id="no-more-tables">
     <table class="table">
       <thead>
         <tr>
@@ -24,24 +56,24 @@
       <tbodys>
         {% for order in orders %}
         <tr>
-          <td>{{ forloop.counter}}</td>
+          <td data-title="Sno.">{{ forloop.counter}}</td>
           <!-- <td> <img style="height:80px;" class='rounded-circle' src="{{order.product.image.url}}" alt=""></td> -->
           <!-- <td>{{order.product}}</td> -->
-          <td>
+          <td data-title="Product">
             {%for i in order.product.all%}
             {{i.name}}<br>
             {% endfor%}
           </td>
-          <td>{{order.date}}</td>
+          <td data-title="Date">{{order.date}}</td>
           <!-- <td> {{order.price|currency}}</td> -->
-          <td> {{order.quantity}}</td>
-          <td> {{order.price}}</td>
+          <td data-title="Quantity"> {{order.quantity}}</td>
+          <td data-title="Price"> {{order.price}}</td>
           <!-- <td> {{order.quantity|multiply:order.price|currency}}</td> -->
           {% if order.status%}
-          <td><small class="badge badge-success">Completed</small></td>
+          <td data-title="Status"><small class="badge badge-success">Completed</small></td>
           {% else%}
-          <td><small class="badge badge-warning">Pending</small></td>
-          <td>
+          <td data-title="Delete"><small class="badge badge-warning">Pending</small></td>
+          <td data-title="Sno.">
             <form action="" method="GET">
               <input type="text" name="del_order" id="" value="{{order.id}}" hidden>
               <input type="submit" value="Delete Order">
@@ -55,6 +87,9 @@
           </tbody>
 
     </table>
+
+    </section>
+    </div>
 
   </div>
 </div>
