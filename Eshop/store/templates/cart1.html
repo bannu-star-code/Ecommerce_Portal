@@ -1,0 +1,221 @@
+{% extends 'base.html'%}
+
+{% block content%}
+{% load cart %}
+
+    <style>
+        @media only screen and (max-width:800px) {
+            #no-more-tables tbody,
+            #no-more-tables tr,
+            #no-more-tables td {
+                display: block;
+            }
+            #no-more-tables thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+            #no-more-tables td {
+                position: relative;
+                padding-left: 50%;
+                border: none;
+                border-bottom: 1px solid #eee;
+            }
+            #no-more-tables td:before {
+                content: attr(data-title);
+                position: absolute;
+                left: 6px;
+                font-weight: bold;
+            }
+            #no-more-tables tr {
+                border-bottom: 1px solid #ccc;
+            }
+        }
+    </style>
+{% if not customer %}
+<div class="container">
+    <div class="border rounded p-4 m-4">
+        <!-- {{products}} -->
+        <p class="display-4 pl-4 ml-4">Your Cart</p>
+        <hr>
+        <section class="bg-light p-5">
+            <div class="responsive-table" id="no-more-tables">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Sno.</th>
+                            <th>Image</th>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in products %}
+                        <tr>
+                            <td data-title="Sno.">{{ forloop.counter}}
+
+                            </td>
+
+                            <td data-title="Image" > <img style="height:80px;" class='rounded-circle' src="{{product.image.url}}" alt=""></td>
+
+                            <td data-title="Product">{{product.name}}</td> 
+
+
+                            <td data-title="Price"> {{product.price|currency}}</td>
+                            <td data-title="Quantity"> {{product|cart_quantity:request.session.cart}} 
+                              <!-- <form action="" method="POST">
+                                {% csrf_token%}
+                                <div>
+                                  <input type="text" name="del" value="{{product.id}}" hidden id=""><input type="submit" value="del"> </div>
+                              </form> -->
+        
+                              <form action="" method="GET">
+                                <!-- {% csrf_token%} -->
+                                <div>
+                                  <input type="text" name="del" value="{{product.id}}" hidden id=""><input type="submit" value="-"> 
+                                </div>
+                              </form>
+        
+                              <form action="" method="GET">
+                                <input type="text" name="add" value="{{product.id}}" hidden id=""><input type="submit" value="+">
+                              </form>
+                            </td>
+                            <td data-title="Total"> {{product|total_price:request.session.cart}}</td>
+                        </tr>
+                        <tr>
+                        
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="4"></th>
+                            <th  class="">Total</th>
+                            <th>{{ products|total_cart_price:request.session.cart|currency}}</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </section>
+        <hr>
+        <div class="m-3 p-3">
+            <a href="" data-toggle="modal" data-target="#exampleModal" class="btn btn-outline-info border rounded col-lg-3 float-right">CheckOut</a>
+        </div>
+    </div>
+</div>
+
+
+<!-- Database Cart -->
+
+
+
+
+{% else%}
+<div class="container">
+  <div class="border rounded p-4 m-4">
+      <!-- {{products}} -->
+      <p class="display-4 pl-4 ml-4">Database Cart</p>
+      <hr>
+      <section class="bg-light p-5">
+        <div class="responsive-table" id="no-more-tables">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Sno.</th>
+                        <th>Image</th>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Product Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cart in cartitem %}
+                    <tr>
+                        <td data-title="Sno.">{{ forloop.counter}}</td>
+
+                        <td data-title="Image"> <img style="height:80px;" class='rounded-circle' src="{{cart.product.image.url}}" alt=""></td>
+
+                        <td data-title="Product">{{cart.product}}</td>
+
+                        <td data-title="Price"> {{cart.product.price|currency}}</td>
+
+                        <td data-title="Quantity"> {{cart.quantity}} </td>
+                        <!-- <td>{{cart.cart.user}}</td> -->
+                        <td data-title="Price">{{cart.product.price|In_toal_price:cart.quantity}}</td>
+                
+                    </tr>
+                    <tr>
+                    
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="4"></th>
+                        <th  class="">Total</th>
+                        <th>
+                          {{cartitem|Db_total_price}}
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </section>
+      
+      <hr>
+      <div class="m-3 p-3">
+          <a href="" data-toggle="modal" data-target="#exampleModal" class="btn btn-outline-info border rounded col-lg-3 float-right">CheckOut</a>
+      </div>
+  </div>
+</div>
+
+<!-- modal -->
+<!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    Launch demo modal
+  </button> -->
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Check Out Form</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="p-2m-3">
+              <form action="/check-out" method="POST">
+                  {%csrf_token%}
+                  <div class="form-group">
+                    <label for="">Address</label>
+                    <input type="text" name="address" id="" class="form-control" placeholder="" aria-describedby="helpId">
+                  </div>
+                  <div class="form-group">
+                    <label for="">Phone</label>
+                    <input type="text" name="Phone" id="" class="form-control" placeholder="" aria-describedby="helpId">
+                  </div>
+
+                  <!-- TTotal Price -->
+                  <!-- <input type="text" name="Total_price" value="{{ products|total_cart_price:request.session.cart}}"> -->
+                  <input type="text" name="Total_price" value="{{cartitem|Db_total_price}}">
+
+
+                  <input type="submit" class="btn btn-outline-info col-lg-6" value='Check Out'>
+              </form>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endif %}
+{% endblock%}

@@ -82,7 +82,7 @@
             <input type="text" name="rem" value="{{product.id}}" hidden>
             <input type="submit" class="float-right btn btn-light  form-control" value="-">
            </form>
-            <div style="width:215px;text-align: center;">{{product.id|database_quantity:pro_list}} in Cart</div>
+            <div style="width:200px;text-align: center;">{{product.id|database_quantity:pro_list}} in Cart</div>
             <form action="" method="POST">
               {%csrf_token%}
             <input type="text" name="product" value="{{product.id}}" hidden>
@@ -106,7 +106,7 @@
           {% else%}
           <div class="row no-gutters">
             <form action="/" method="POST" class="btn-block">
-              
+              {% if customer%}
               {% if product|is_in_cart:request.session.favourite %}
               {% csrf_token %}
               <input  type="text" hidden name='fav' value='{{product.id}}'>
@@ -118,6 +118,8 @@
               <input  type="text" hidden name='added' value='True'>
               <input type="submit" class="float-right btn btn-light  form-control" value="Add To Favourite">
               {%endif%}
+              {%endif%}
+
             </form>
           </div>
           <div class="card-footer p-0 no-gutters">

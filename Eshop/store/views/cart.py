@@ -71,9 +71,9 @@ class CartView(View):
             if cartitem:
               d["cartitem"]=cartitem
             print(cartitem)
-        d["products"]=products
+        d["products"]=products  
         d["form"]=s
 
 
 
-        return render(request, 'cart.html',d)
+        return render(request, 'cart1.html',d)

@@ -86,8 +86,11 @@ class Index(View):
                     q=CartItem.objects.get(pk=i.id)
                     a=q.quantity
                     a-=1
-                    q.quantity=a
-                    q.save(update_fields=['quantity'])             
+                    if a==0:
+                        q.delete()
+                    else:
+                        q.quantity=a
+                        q.save(update_fields=['quantity'])             
                     v=False
              
             except:
